@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Lobby Pad";
+}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="/img/village-inn-logo.png" alt="">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="form-inline w-100" id="registerForm" method="POST" action="Register">
+            <input type="hidden" name="guid" value="@Guid.NewGuid()">
+            <input type="text" class="form-control" id="inputName" name="name" placeholder="Name">
+            <input type="tel" class="form-control" id="inputPhoneNumber" name="phoneNumber" placeholder="Phone Number">
+            <input type="number" min="1" max="10" class="form-control" id="inputPartySize" name="partySize" value="1">
+            <input type="text" class="form-control" id="inputSpecialRequests" name="specialRequests" placeholder="Special Requests">
+            <button type="submit" id="inputButtonSubmit" class="form-control btn btn-primary">Submit</button>
+        </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="margin-top: 10px">
+    @foreach (LobbyEntry entry in ViewBag.LobbyEntries) {
+        <div class="card" style="margin-top: 10px">
+            <h6 class="card-header">
+                @entry.Name - Party of @entry.PartySize
+                <div class="float-lg-right text-muted creationTime" value="@entry.CreationTime.ToJavascriptTime()"></div>
+            </h6>
+
+            @if (!string.IsNullOrEmpty(entry.SpecialRequests)) {
+                <div class="card-body">
+                    <p class="card-text">@entry.SpecialRequests</p>
+                </div>
+            }
+
+            <div class="card-footer text-muted">
+                <form method="POST" style="display: inline"  action="SendMessage">
+                    <input type="hidden" name="guid" value="@entry.Id">
+
+                    @if (entry.Status == LobbyEntryStatus.Messaged) {
+                        <button type="submit" class="btn btn-primary">Re-send Message</button>
+                    }
+                    else {
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    }
+                </form>
+                <form class="float-lg-right" style="display: inline"  method="POST" action="Cancel">
+                    <input type="hidden" name="guid" value="@entry.Id">
+                    <button type="submit" class="btn btn-danger">Cancel</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
