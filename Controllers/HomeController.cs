@@ -36,7 +36,8 @@ namespace LobbyPad.Controllers
         [HttpPost("Register")]
         public IActionResult Register(string guid, string name, string phoneNumber, int partySize, string specialRequests)
         {
-            if (Guid.TryParse(guid, out var id)) {
+            if (Guid.TryParse(guid, out var id) && !string.IsNullOrWhiteSpace(name) && name.Length != 0)
+            {
                 var entry = new LobbyEntry {
                     Id = id,
                     Name = name,
@@ -48,6 +49,37 @@ namespace LobbyPad.Controllers
                 };
 
                 _lobbyPad.TryRegister(entry);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("Edit")]
+        public IActionResult Edit(string guid)
+        {
+            if (Guid.TryParse(guid, out var id)) {
+                if (_lobbyPad.TryGetById(id, out var entry)) {
+                    ViewBag.Entry = entry;
+
+                    return View();
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+        
+        [HttpPost("Edit")]
+        public IActionResult Edit(string guid, string name, string phoneNumber, int partySize, string specialRequests) 
+        {
+            if (Guid.TryParse(guid, out var id)) {
+                if (_lobbyPad.TryGetById(id, out var entry)) {
+                    entry.Name = name;
+                    entry.PhoneNumber = phoneNumber;
+                    entry.PartySize = partySize;
+                    entry.SpecialRequests = specialRequests;
+
+                    _lobbyPad.TryUpdate(entry);
+                }
             }
 
             return RedirectToAction("Index");
