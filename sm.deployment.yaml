@@ -63,7 +63,7 @@ spec:
             secretName: lobby-pad-secrets
       containers:
         - name: sm-lobby-pad-container
-          image: scoizzle/lobby-pad:0.0.8
+          image: scoizzle/lobby-pad:0.0.9
           ports:
             - containerPort: 5000
               name: "app-server"
