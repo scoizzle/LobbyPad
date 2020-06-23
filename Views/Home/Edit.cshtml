@@ -12,7 +12,7 @@
             <input type="hidden" name="guid" value="@ViewBag.Entry.Id">
             <input type="text" class="form-control" id="inputName" name="name" placeholder="Name" value="@ViewBag.Entry.Name">
             <input type="tel" class="form-control" id="inputPhoneNumber" name="phoneNumber" placeholder="Phone Number" value="@ViewBag.Entry.PhoneNumber">
-            <input type="number" min="1" max="10" class="form-control" id="inputPartySize" name="partySize" value="@ViewBag.Entry.PartySize">
+            <input type="number" min="1" class="form-control" id="inputPartySize" name="partySize" value="@ViewBag.Entry.PartySize">
             <input type="text" class="form-control" id="inputSpecialRequests" name="specialRequests" placeholder="Special Requests" value="@ViewBag.Entry.SpecialRequests">
             <button type="submit" id="inputButtonSubmit" class="form-control btn btn-warning">Update</button>
         </form>
